@@ -1,0 +1,103 @@
+.divider {
+  border-bottom: 2px solid black;
+}
+:host ::ng-deep {
+  .search {
+    .mat-form-field-wrapper {
+      padding-bottom: 0;
+    }
+
+    .mat-form-field-outline {
+      color: red;
+    }
+  }
+}
+
+.responsive {
+  width: 100%;
+  overflow-y: scroll;
+  overflow-x: scroll;
+  max-height: 320px;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  border: 1px solid #ddd;
+  th,
+  td {
+    overflow: hidden;
+    width: 130px;
+    word-wrap: break-word;
+    border-right: 1px solid #ddd !important;
+    border-bottom: 1px solid #ddd;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    &:last-child {
+      border-right: 0px;
+    }
+  }
+  th {
+    text-align: center;
+    background-color: green;
+    color: white;
+  }
+
+  tr .first-as-header {
+    text-align: center;
+    background-color: green;
+    color: white;
+  }
+  .mat-header-row {
+    height: 2rem;
+  }
+  .mat-column-acctNo {
+    width: 110px;
+  }
+  .mat-column-flags {
+    width: 100px;
+  }
+  .mat-column-productTypeDesc {
+    width: 130px;
+  }
+  .mat-column-openDate {
+    width: 120px;
+  }
+  .mat-column-limitAmount {
+    width: 200px;
+  }
+  .mat-column-acctStatus {
+    width: 120px;
+  }
+  .mat-column-employeeName {
+    width: 130px;
+  }
+  .mat-column-ocDesc {
+    width: 100px;
+  }
+  .mat-column-action {
+    width: 130px;
+  }
+  .mat-column-limitAmounts {
+    width: 150px;
+  }
+  .mat-column-action {
+    width: 150px;
+  }
+  .mat-column-limitAmounts {
+    width: 150px;
+  }
+  .mat-column-acctStatuss {
+    width: 150px;
+  }
+  .mat-column-bookBranchDescs {
+    width: 150px;
+  }
+  .mat-column-ocDescs {
+    width: 150px;
+  }
+  .mat-column-actions {
+    width: 150px;
+  }
+}

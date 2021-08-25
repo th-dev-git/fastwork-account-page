@@ -1,0 +1,37 @@
+@import "./assets/bootstrap-them";
+
+$backgroud-color: white;
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  height: -moz-calc(100%-100px);
+  height: -wekbkit-calc(100%-100px);
+  height: 100%;
+  background-color: $backgroud-color;
+
+  font-weight: normal;
+  font-family: "Kanit", "sans-serif";
+  touch-action: manipulation;
+}
+
+.lsh-container {
+  margin-top: 70px;
+  position: relative;
+}
+
+.load-container {
+  margin-top: 20px;
+}
+
+.errMessage {
+  // margin-top: 30px;
+  padding-top: 2px;
+  padding-bottom: 4px;
+  font-size: 18px;
+  text-align: center;
+  color: var(--primary-color);
+}

@@ -1,0 +1,75 @@
+<div class="lsh-container">
+  <div class="container-fluid d-flex flex-column justify-content-center align-items-center">
+    <div class="mb-5 w-75">
+      <div class="responsive" style="overflow: auto;">
+        <div class="table">
+          <table mat-table [dataSource]="accountDetails" matSort class="table-primarymat-elevation-z8">
+            <ng-container *ngFor="let rows of headerColumnValues">
+              <ng-container *ngFor="let col of rows; let i = index">
+                <ng-container [matColumnDef]="col.value">
+                  <th mat-header-cell *matHeaderCellDef [attr.rowspan]="col.rowspan ? col.rowspan : 1"
+                    [attr.colspan]="col.colspan ? col.colspan : 1">
+                    {{ col.name }}
+                  </th>
+                  <!-- header cell -->
+                  <td mat-cell *matCellDef="let element">
+                    <!-- dataSource = accountDetails -->
+                    {{ element[col.value] }}
+                  </td>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngFor="let row of headerRows">
+              <tr mat-header-row *matHeaderRowDef="row; sticky: true"></tr>
+            </ng-container>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </div>
+      </div>
+      <mat-paginator [length]="10" (page)="pageEvent = $event" [pageSizeOptions]="[5, 10, 50, 100]"
+        showFirstLastButtons></mat-paginator>
+      <div style="border-bottom: 2px solid black" class="pt-2"></div>
+    </div>
+
+    <div class="my-5 w-75">
+      <div class="responsive" style="overflow: auto;">
+        <div class="table">
+          <div class="table">
+            <table mat-table [dataSource]="summary" matSort class="table-primarymat-elevation-z8">
+              <ng-container *ngFor="let rows of table2Header">
+                <ng-container *ngFor="let col of rows; let i = index">
+                  <ng-container [matColumnDef]="col.value">
+                    <th mat-header-cell *matHeaderCellDef [attr.rowspan]="col.rowspan ? col.rowspan : 1"
+                      [attr.colspan]="col.colspan ? col.colspan : 1">
+                      {{ col.name }}
+                    </th>
+                    <!-- header cell -->
+                    <td mat-cell [className]=" i == 0 ? 'first-as-header' : ''"  *matCellDef="let element">
+                      <!-- dataSource = accountDetails -->
+                      {{ element[col.value] }}
+                    </td>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngFor="let row of convertedTable2HeaderRows">
+                <tr mat-header-row *matHeaderRowDef="row; sticky: true"></tr>
+              </ng-container>
+              <tr mat-row *matRowDef="let row; columns: convertedTable2Headers"></tr>
+              <!-- <ng-container *ngFor="let column of displayedColumnsSum">
+                <ng-container [matColumnDef]="column">
+                  <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element[column] }}
+                  </td>
+                </ng-container>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsSum; sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsSum"></tr> -->
+            </table>
+          </div>
+        </div>
+      </div>
+      <div style="border-bottom: 2px solid black" class="pt-2"></div>
+    </div>
+  </div>
+</div>
