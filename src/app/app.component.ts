@@ -87,51 +87,93 @@ export class AppComponent {
     },
   ];
 
-  table2Header : HeaderCell[][] =[
+  table2Header: HeaderCell[][] = [
     [
       { value: 'detail', name: ' ' },
       { value: 'sumMoney', name: 'เงินต้น' },
-      { value: 'sumPrince', name: 'ดอกเบี้ย'},
+      { value: 'sumPrince', name: 'ดอกเบี้ย' },
       { value: 'sumTot', name: 'รวม' },
-    ]
-  ]
-  convertedTable2Headers: string[] = []
-  convertedTable2HeaderRows: any
-  headerColumnsSum = {
-    acctNo: '',
-    sumMoney: 'เงินต้น',
-    sumPrince: 'ดอกเบี้ย',
-    sumTot: 'รวม'
-  };
-  displayedColumnsSum: string[] = [
-    'acctNo',
-    'sumMoney',
-    'sumPrince',
-    'sumTot',
+    ],
   ];
-  summary = [{
-    detail: 'รายละเอียด',
-    account: 'xxxx',
-    sumMoney: '10,000',
-    sumPrince: '100',
-    sumTot: '11,000'
-  }]
+  convertedTable2Headers: string[] = [];
+  convertedTable2HeaderRows: any;
+
+  summary = [
+    {
+      detail: 'รายละเอียด',
+      account: 'xxxx',
+      sumMoney: '10,000',
+      sumPrince: '100',
+      sumTot: '11,000',
+    },
+  ];
+
+  table3: TableObject = {
+    name: 'info',
+    headerData: [
+      [
+        { value: 'name', name: 'ชื่อ' },
+        { value: 'regisNumber', name: 'เลขทะเบียน' },
+        { value: 'status', name: 'สถานะ' },
+        { value: 'detail', name: 'ข้อมูลเพิ่มเติม', colspan: 4, display: true },
+      ],
+    ],
+    columns: [],
+    headers: [],
+    data: [
+      {
+        name: ['testName'],
+        regisNumber: [1234],
+        status: ['A'],
+        detail: ['1', 'xxx', 'test1.1', 'test1.1'],
+      },
+      {
+        name: [''],
+        regisNumber: [''],
+        status: [''],
+        detail: ['2', 'yyy', 'test1.2', 'test1.2'],
+      },
+      {
+        name: [''],
+        regisNumber: [''],
+        status: [''],
+        detail: ['3', 'zzz', 'test1.3', 'test1.3'],
+      },      
+      {
+        name: [''],
+        regisNumber: [''],
+        status: [''],
+        detail: ['', '', '', ''],
+      },
+      {
+        name: ['นายCFNAME'],
+        regisNumber: [412333445888],
+        status: ['F'],
+        detail: ['1', 'aaa', 'test2.1', 'test2.1'],
+      },
+      {
+        name: [''],
+        regisNumber: [""],
+        status: [''],
+        detail: ['2', 'bbb', 'test2.2', 'test2.2'],
+      },
+    ],
+  };
 
   constructor() {}
 
   ngOnInit(): void {
-    this.rows = this.accountDetails;
     this.headerRows = this.headerColumnValues.map((row) =>
       row.map((col) => col.value)
     );
-
     this.displayedColumns = this.getTableHeader(this.headerColumnValues);
+
     this.convertedTable2HeaderRows = this.table2Header.map((row) =>
       row.map((col) => col.value)
     );
     this.convertedTable2Headers = this.getTableHeader(this.table2Header);
 
-    console.log(this.convertedTable2Headers);
+    this.initTable(this.table3);
   }
 
   getTableHeader(header: HeaderCell[][]): string[] {
@@ -176,10 +218,72 @@ export class AppComponent {
       });
     });
 
-    return head.map((row) => row.filter((col) => col.colspan == 1))
+    return head
+      .map((row) => row.filter((col) => col.colspan == 1))
       .reduce((acc, cur) => acc.concat(cur))
       .sort((a, b) => a.rowSeq - b.rowSeq)
       .map((col) => col.value);
+  }
+
+  initTable(table: TableObject) {
+    table.headers = table.headerData.map((row) => row.map((col) => col.value));
+    table.columns = this.convertToColumns(table.headerData);
+  }
+
+  convertToColumns(data: HeaderCell[][]): string[] {
+    const head: Header[][] = data.map((row: HeaderCell[], rowIndex) => {
+      let sum = 0;
+      return row.map((col: HeaderCell, colIndex) => {
+        const rowspan = col.rowspan ? col.rowspan : 1;
+        const colspan = col.colspan ? col.colspan : 1;
+        col.colspan = colspan;
+        col.rowspan = rowspan;
+        col.display = col.display ? col.display : col.colspan === 1;
+        col.index = colIndex;
+        col.level = rowIndex;
+        col.rowSeq = sum;
+
+        const newCol: Header = {
+          value: col.value,
+          index: colIndex,
+          level: rowIndex,
+          rowSeq: col.rowSeq,
+          colspan,
+          rowspan,
+          display: col.display,
+        };
+        sum += colspan;
+        return newCol;
+      });
+    });
+
+    const colSpanLevel: number[][] = head.map((h) =>
+      new Array(head[0].reduce((acc, cur) => acc + cur.colspan, 0)).fill(0)
+    );
+
+    head.forEach((row) => {
+      row.forEach((col) => {
+        let colPos = colSpanLevel[col.level].indexOf(0);
+        let silced = colSpanLevel[col.level].slice(0, colPos + 1);
+        col.rowSeq = silced.reduce((acc, cur) => acc + cur, 0);
+        for (let i = 0; i < col.rowspan; i++) {
+          for (let j = 0; j < col.colspan; j++) {
+            colSpanLevel[i + col.level][j + col.rowSeq] += 1;
+          }
+        }
+      });
+    });
+
+    return head
+      .map((row) => row.filter((col) => col.display))
+      .reduce((acc, cur) => acc.concat(cur))
+      .sort((a, b) => a.rowSeq - b.rowSeq)
+      .map((col) => col.value);
+  }
+
+  isArray(obj: any): boolean {
+    console.log(obj);
+    return Array.isArray(obj);
   }
 }
 
@@ -191,6 +295,7 @@ interface Header {
   rowSeq: number;
   index: number;
   level: number;
+  display?: boolean;
 }
 
 interface HeaderCell {
@@ -202,4 +307,13 @@ interface HeaderCell {
   rowSeq?: number;
   index?: number;
   level?: number;
+  display?: boolean;
+}
+
+interface TableObject {
+  name: string;
+  headerData: HeaderCell[][];
+  data: any[];
+  columns: string[];
+  headers: string[][];
 }

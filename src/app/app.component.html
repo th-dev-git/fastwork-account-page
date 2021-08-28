@@ -1,6 +1,6 @@
 <div class="lsh-container">
-  <div class="container-fluid d-flex flex-column justify-content-center align-items-center">
-    <div class="mb-5">
+  <div class="container-fluid d-flex flex-column justify-content-center align-items-center pt-4">
+    <div class="mb-3">
       <div class="responsive" style="overflow: auto;">
         <div class="table">
           <table mat-table [dataSource]="accountDetails" matSort class="table-primarymat-elevation-z8">
@@ -31,7 +31,7 @@
       <div style="border-bottom: 2px solid black" class="pt-2"></div>
     </div>
 
-    <div class="my-5 w-50">
+    <div class="my-4 w-50">
       <div class="responsive" style="overflow: auto;">
         <div class="table">
           <div class="table">
@@ -44,7 +44,7 @@
                       {{ col.name }}
                     </th>
                     <!-- header cell -->
-                    <td mat-cell [className]=" i == 0 ? 'first-as-header' : ''"  *matCellDef="let element">
+                    <td mat-cell [className]=" i == 0 ? 'first-as-header' : ''" *matCellDef="let element">
                       <!-- dataSource = accountDetails -->
                       {{ element[col.value] }}
                     </td>
@@ -55,6 +55,42 @@
                 <tr mat-header-row *matHeaderRowDef="row; sticky: true"></tr>
               </ng-container>
               <tr mat-row *matRowDef="let row; columns: convertedTable2Headers"></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div style="border-bottom: 2px solid black" class="pt-2"></div>
+    </div>
+
+    <!-- TABLE 3 -->
+    <div class="my-4 w-75">
+      <div class="responsive" style="overflow: auto;">
+        <div class="table">
+          <div class="table">
+            <table mat-table [dataSource]="table3.data" matSort class="table-primarymat-elevation-z8">
+              <ng-container *ngFor="let rows of table3.headerData">
+                <ng-container *ngFor="let col of rows; let i = index">
+                  <ng-container [matColumnDef]="col.value">
+                    <th mat-header-cell *matHeaderCellDef class="non-fix-width"
+                    [attr.rowspan]="col.rowspan ? col.rowspan : 1"
+                      [attr.colspan]="col.colspan ? col.colspan : 1">
+                      {{ col.name }}
+                    </th>
+                    <!-- header cell -->
+                    <!-- *matCellDef = dataSource -->
+                    <ng-container *matCellDef="let element">
+                      <td mat-cell *ngFor="let str of element[col.value]">
+                          {{ str }}
+                      </td>                  
+                    </ng-container>
+
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngFor="let row of table3.headers">
+                <tr mat-header-row *matHeaderRowDef="row; sticky: true"></tr>
+              </ng-container>
+              <tr mat-row *matRowDef="let row; columns: table3.columns"></tr>
             </table>
           </div>
         </div>
