@@ -122,45 +122,45 @@ export class AppComponent {
     headers: [],
     data: [
       {
-        name: ['testName'],
-        regisNumber: [1234],
-        status: ['A'],
+        name: 'testName',
+        regisNumber: 1234,
+        status: 'A',
         detail: ['1', 'xxx', 'test1.1', 'test1.1'],
       },
       {
-        name: [''],
-        regisNumber: [''],
-        status: [''],
+        name: '',
+        regisNumber: '',
+        status: '',
         detail: ['2', 'yyy', 'test1.2', 'test1.2'],
       },
       {
-        name: [''],
-        regisNumber: [''],
-        status: [''],
+        name: '',
+        regisNumber: '',
+        status: '',
         detail: ['3', 'zzz', 'test1.3', 'test1.3'],
-      },      
+      },
       {
-        name: [''],
-        regisNumber: [''],
-        status: [''],
+        name: '',
+        regisNumber: '',
+        status: '',
         detail: ['', '', '', ''],
       },
       {
-        name: ['นายCFNAME'],
-        regisNumber: [412333445888],
-        status: ['F'],
+        name: 'นายCFNAME',
+        regisNumber: 412333445888,
+        status: 'F',
         detail: ['1', 'aaa', 'test2.1', 'test2.1'],
       },
       {
-        name: [''],
-        regisNumber: [""],
-        status: [''],
+        name: '',
+        regisNumber: '',
+        status: '',
         detail: ['2', 'bbb', 'test2.2', 'test2.2'],
       },
     ],
   };
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     this.headerRows = this.headerColumnValues.map((row) =>
@@ -228,6 +228,11 @@ export class AppComponent {
   initTable(table: TableObject) {
     table.headers = table.headerData.map((row) => row.map((col) => col.value));
     table.columns = this.convertToColumns(table.headerData);
+    table.data.forEach((data) => {
+      for (const prop in data) {
+        if (typeof data[prop] != typeof []) data[prop] = [data[prop]];
+      }
+    });
   }
 
   convertToColumns(data: HeaderCell[][]): string[] {
