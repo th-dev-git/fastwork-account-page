@@ -125,37 +125,37 @@ export class AppComponent {
         name: 'testName',
         regisNumber: 1234,
         status: 'A',
-        detail: ['1', 'xxx', 'test1.1', 'test1.1'],
+        detail: { seq: '1' , code: 'xxx',des1 :'test1.1',des2:'test1.1'}
       },
       {
         name: '',
         regisNumber: '',
         status: '',
-        detail: ['2', 'yyy', 'test1.2', 'test1.2'],
+        detail: { seq: '2' , code: 'yyy',des1 :'test1.2',des2:'test1.2'}
       },
       {
         name: '',
         regisNumber: '',
         status: '',
-        detail: ['3', 'zzz', 'test1.3', 'test1.3'],
+        detail: { seq: 'xxx' , code: 'zzz',des1 :'aaa',des2:'zzz'}
       },
       {
         name: '',
         regisNumber: '',
         status: '',
-        detail: ['', '', '', ''],
+        detail: { seq: '' , code: '',des1 :'',des2:''}
       },
       {
         name: 'นายCFNAME',
         regisNumber: 412333445888,
         status: 'F',
-        detail: ['1', 'aaa', 'test2.1', 'test2.1'],
+        detail: { seq: '1' , code: 'aaa',des1 :'test2.1',des2:'test2.1'}
       },
       {
         name: '',
         regisNumber: '',
         status: '',
-        detail: ['2', 'bbb', 'test2.2', 'test2.2'],
+        detail: { seq: '2' , code: 'bbb',des1 :'test2.2',des2:'test2.2'}
       },
     ],
   };
@@ -230,8 +230,10 @@ export class AppComponent {
     table.columns = this.convertToColumns(table.headerData);
     table.data.forEach((data) => {
       for (const prop in data) {
-        if (typeof data[prop] != typeof []) data[prop] = [data[prop]];
-      }
+        if(typeof data[prop] == typeof {} && !Array.isArray(data[prop]))
+          data[prop] = Object.values(data[prop]).map(v => v);        
+        if (typeof data[prop] != typeof []) data[prop] = [data[prop]];        
+      }      
     });
   }
 
